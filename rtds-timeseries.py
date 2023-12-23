@@ -12,7 +12,6 @@ st.title("RTDS PROJECT")
 st.text( "Caleb Ginorio, Steve Jahn, Spencer Pizzani")
 
 
-
 # Set a seed for reproducibility
 random.seed(42)
 np.random.seed(42)
@@ -35,7 +34,7 @@ data = {
     "Detector10": np.random.rand(num_entries) * 50
 }
 
-# Create DataFrame
+# DataFrame
 df = pd.DataFrame(data)
 
 df.head()
@@ -44,13 +43,10 @@ st.subheader("Data")
 
 st.dataframe(df)
 
-
 # Streamlit app
 
-
 def main():
-    st.title("Detector Concentration Analysis")
-
+    st.title("Detector Concentration")
 
     # User inputs for limits
     twa_limit = st.sidebar.number_input("Enter TWA Limit", value=0.0)
@@ -78,18 +74,15 @@ def main():
     else:
         selected_detectors = st.sidebar.multiselect("Select Detectors", all_detectors)
 
-
     # Filter the data
     mask = (df['Timestamp'] >= start_datetime) & (df['Timestamp'] <= end_datetime)
     filtered_df = df.loc[mask, ["Timestamp"] + selected_detectors]
 
-    # Calculate the average concentration and plot
+    # Average concentration calculation and plot
     if not filtered_df.empty and selected_detectors:
         filtered_df['AvgConcentration'] = filtered_df[selected_detectors].mean(axis=1)
         fig = px.line(filtered_df, x='Timestamp', y='AvgConcentration', title='Average Concentration Over Time')
         st.plotly_chart(fig)
-
-
 
     if not filtered_df.empty and selected_detectors:
         filtered_df['AvgConcentration'] = filtered_df[selected_detectors].mean(axis=1)
@@ -97,13 +90,11 @@ def main():
         total_intervals = np.arange(1, len(filtered_df) + 1)
         filtered_df['TWA'] = filtered_df['CumulativeConcentration'] / total_intervals
 
-    
 
         # Plotting the Rolling TWA graph
         fig_twa = px.line(filtered_df, x='Timestamp', y='TWA', title='Rolling Time Weighted Average')
         fig_twa.add_hline(y=twa_limit, line_dash="dash", line_color="blue", annotation_text="TWA Limit")
         st.plotly_chart(fig_twa)
-
 
             # ARIMA Prediction Section
         st.subheader("ARIMA Model Prediction")
