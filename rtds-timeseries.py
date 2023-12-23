@@ -9,7 +9,7 @@ import statsmodels.api as sm
 
 
 st.title("RTDS PROJECT")
-st.text( "Caleb Ginorio, Steve Jahn, Spencer Pizzani, sonso")
+st.text( "Caleb Ginorio, Steve Jahn, Spencer Pizzani")
 
 
 # Set a seed for reproducibility
